@@ -1,0 +1,49 @@
+def compare_files(file1_path, file2_path):
+    try:
+        with open(file1_path, 'r') as file1:
+            content1 = file1.read()
+
+        with open(file2_path, 'r') as file2:
+            content2 = file2.read()
+
+        lines1 = content1.splitlines()
+        lines2 = content2.splitlines()
+
+        diff_lines = []
+
+        for line in difflib.unified_diff(lines1, lines2, lineterm=''):
+            if line.startswith('+') or line.startswith('-'):
+                diff_lines.append(line)
+
+        if diff_lines:
+            return '\n'.join(diff_lines)
+        else:
+            return '两个文件内容相同。'
+
+    except FileNotFoundError:
+        return '文件未找到。'
+
+import difflib
+
+print("文件比较工具命令行工具")
+
+while True:
+    print("\n请选择操作：")
+    print("1. 比较两个文件")
+    print("2. 退出程序")
+
+    choice = input("请选择操作（输入数字）：")
+
+    if choice == '2':
+        print("谢谢使用，再见！")
+        break
+
+    if choice != '1':
+        print("无效的选择，请重新输入。")
+        continue
+
+    file1_path = input("请输入第一个文件的路径：")
+    file2_path = input("请输入第二个文件的路径：")
+
+    diff_result = compare_files(file1_path, file2_path)
+    print("文件比较结果：\n", diff_result)
